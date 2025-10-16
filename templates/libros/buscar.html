@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Buscar libros{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h4 m-0">Buscar libros</h1>
+  <a class="btn btn-outline-secondary" href="{{ url_for('libros_listar') }}">↩ Volver</a>
+</div>
+
+<form method="get" class="row g-3 mb-3">
+  <div class="col-md-8">
+    <label class="form-label">Título o autor</label>
+    <input class="form-control" name="q" placeholder="Ej: García Márquez, 1984"
+           value="{{ request.args.get('q','') }}">
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">Año</label>
+    <input type="number" class="form-control" name="anio"
+           value="{{ request.args.get('anio','') }}">
+  </div>
+  <div class="col-md-2 d-flex align-items-end gap-2">
+    <button class="btn btn-primary w-100" type="submit">🔎 Buscar</button>
+    <a class="btn btn-outline-secondary" href="{{ url_for('libros_buscar') }}">Limpiar</a>
+  </div>
+</form>
+
+{% if resultados is not none %}
+  {% if resultados|length > 0 %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>ID</th><th>Título</th><th>Autor</th><th>Año</th>
+            <th>Género</th><th>ISBN</th><th>Copias</th><th>Disp.</th>
+            <th class="text-end">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for l in resultados %}
+          <tr>
+            <td>{{ l.id }}</td>
+            <td class="fw-medium">{{ l.titulo }}</td>
+            <td>{{ l.autor }}</td>
+            <td>{{ l.anio_publicacion }}</td>
+            <td>{{ l.genero }}</td>
+            <td>{{ l.isbn }}</td>
+            <td>{{ l.numero_copias }}</td>
+            <td>{{ l.copias_disponibles }}</td>
+            <td class="text-end">
+              <a class="btn btn-sm btn-outline-primary"
+                 href="{{ url_for('libros_editar', libro_id=l.id) }}">✏️ Editar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-info">No se encontraron resultados para tu búsqueda.</div>
+  {% endif %}
+{% else %}
+  <div class="text-muted">Ingresa un término y presiona <b>Buscar</b>.</div>
+{% endif %}
+{% endblock %}

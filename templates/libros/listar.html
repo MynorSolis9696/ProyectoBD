@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Libros{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h4 class="mb-0">Libros</h4>
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a class="btn btn-primary btn-sm" href="{{ url_for('libros_agregar') }}">Agregar libro</a>
+  </div>
+</div>
+
+<div class="mb-2 text-muted">Total: <strong>{{ libros|length }}</strong></div>
+
+<div class="table-responsive">
+<table class="table table-hover align-middle bg-white shadow-sm">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th><th>Título</th><th>Autor</th><th>Año</th><th>Género</th>
+          <th>ISBN</th><th>Copias</th><th>Disponibles</th>
+          {% if session.get('user_rol') in ['BIBLIOTECARIO','ADMIN'] %}<th>Acciones</th>{% endif %}
+        </tr>
+      </thead>
+  <tbody>
+    {% for l in libros %}
+    <tr>
+      <td>{{ l.id }}</td>
+      <td>{{ l.titulo }}</td>
+      <td>{{ l.autor }}</td>
+      <td>{{ l.anio_publicacion }}</td>
+      <td>{{ l.genero }}</td>
+      <td>{{ l.isbn }}</td>
+      <td>{{ l.numero_copias }}</td>
+      <td>
+        <span class="badge {% if l.copias_disponibles|int <= 2 %}bg-warning text-dark{% else %}bg-success{% endif %}">
+          {{ l.copias_disponibles }}
+        </span>
+      </td>
+      {% if session.get('user_rol') in ['BIBLIOTECARIO','ADMIN'] %}
+        <td>
+          <a class="btn btn-sm btn-outline-primary" href="{{ url_for('libros_editar', libro_id=l.id) }}">Editar</a>
+          <form action="{{ url_for('libros_eliminar', libro_id=l.id) }}" method="post" class="d-inline">
+            <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Eliminar libro?')">Eliminar</button>
+          </form>
+        </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

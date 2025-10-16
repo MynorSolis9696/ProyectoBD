@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Libros con bajo stock{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h4 class="mb-0">Libros con bajo stock</h4>
+  <div class="d-flex gap-2">
+    <form class="d-flex" method="get" action="{{ url_for('reporte_bajo_stock') }}">
+      <label class="me-2 mt-1">Umbral</label>
+      <input name="threshold" type="number" min="0" value="{{ threshold or 2 }}" class="form-control form-control-sm me-2" style="width:80px" />
+      <button class="btn btn-primary btn-sm" type="submit">Aplicar</button>
+    </form>
+    <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('reporte_bajo_stock_download', threshold=threshold or 2) }}">Descargar CSV</a>
+  </div>
+</div>
+
+{% if libros %}
+  <div class="table-responsive">
+    <table class="table align-middle bg-white shadow-sm">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th><th>Título</th><th>Autor</th><th>Disponibles</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for l in libros %}
+        <tr class="{% if l.copias_disponibles|int <= 1 %}table-danger{% else %}table-warning{% endif %}">
+          <td>{{ l.id }}</td>
+          <td>{{ l.titulo }}</td>
+          <td>{{ l.autor }}</td>
+          <td><span class="badge bg-warning text-dark">{{ l.copias_disponibles }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div class="alert alert-success">No hay libros con bajo stock (≤ 2).</div>
+{% endif %}
+{% endblock %}

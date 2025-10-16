@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Nuevo préstamo</h2>
+
+<form method="post">
+  <div class="mb-3">
+    <label>Usuario</label>
+    <select name="usuario_id" class="form-select" required>
+      {% for u in usuarios %}
+      <option value="{{ u.id }}">{{ u.nombre }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>Libro</label>
+    <select name="libro_id" class="form-select" required>
+      {% for l in libros %}
+      <option value="{{ l.id }}">{{ l.titulo }}{% if l.editorial %} — {{ l.editorial }}{% endif %}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label>Días de préstamo</label>
+    <input name="dias" type="number" class="form-control" value="14" min="1">
+  </div>
+
+  <div class="mb-3">
+    <label>Penalización</label>
+    <div class="form-text">Recordatorio: se cobrará 1Q por día de retraso (informativo)</div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label>Días de préstamo</label>
+      <input name="dias" type="number" class="form-control" value="14" min="1" required>
+    </div>
+    <div class="col-md-6 mb-3">
+      <label>Penalización</label>
+      <div class="form-control-plaintext">Recordatorio: se aplicará 1Q por día de retraso</div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Registrar préstamo</button>
+  <a href="{{ url_for('prestamos_listar') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

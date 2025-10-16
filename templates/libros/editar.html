@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Editar libro{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Editar libro</h2>
+    <a class="btn btn-outline-secondary" href="{{ url_for('libros_listar') }}">⬅ Volver</a>
+  </div>
+
+  <form method="post" class="row g-3">
+    <div class="col-12">
+      <label class="form-label">Título</label>
+      <input name="titulo" class="form-control" value="{{ libro.titulo }}" required>
+    </div>
+    <div class="col-12">
+      <label class="form-label">Autor</label>
+      <input name="autor" class="form-control" value="{{ libro.autor }}">
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label">Año de publicación</label>
+      <input name="anio_publicacion" type="number" class="form-control" value="{{ libro.anio_publicacion }}">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Género</label>
+      <input name="genero" class="form-control" value="{{ libro.genero }}">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">ISBN</label>
+      <input name="isbn" class="form-control" value="{{ libro.isbn }}">
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Número de copias</label>
+      <input name="numero_copias" type="number" class="form-control" value="{{ libro.numero_copias }}">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Copias disponibles</label>
+      <input name="copias_disponibles" type="number" class="form-control" value="{{ libro.copias_disponibles }}">
+    </div>
+
+    <div class="col-12">
+      <button class="btn btn-primary">Guardar</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

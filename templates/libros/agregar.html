@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Agregar libro{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h4 class="mb-0">Agregar libro</h4>
+  <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('libros_listar') }}">Volver</a>
+</div>
+
+<form method="post" class="card shadow-sm p-3">
+  <div class="row g-3">
+    <div class="col-12">
+      <label class="form-label">Título</label>
+      <input name="titulo" class="form-control" required>
+    </div>
+    <div class="col-12">
+      <label class="form-label">Autor</label>
+      <input name="autor" class="form-control" required>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Año de publicación</label>
+      <input name="anio_publicacion" type="number" class="form-control" value="2000">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Género</label>
+      <input name="genero" class="form-control">
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">ISBN</label>
+      <input name="isbn" class="form-control">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Número de copias</label>
+      <input name="numero_copias" type="number" class="form-control" value="1" min="0">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Copias disponibles</label>
+      <input name="copias_disponibles" type="number" class="form-control" value="1" min="0">
+    </div>
+  </div>
+  <div class="mt-3">
+    <button class="btn btn-primary">Guardar</button>
+    <a class="btn btn-light" href="{{ url_for('libros_listar') }}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

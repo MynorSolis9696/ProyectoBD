@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h4 class="mb-0">¡Hola, {{ usuario or 'Administrador' }}!</h4>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="text-muted">Usuarios</div>
+        <div class="display-5 fw-bold">{{ tot_usuarios }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="text-muted">Libros</div>
+        <div class="display-5 fw-bold">{{ tot_libros }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="text-muted">Préstamos activos</div>
+        <div class="display-5 fw-bold">{{ tot_prestamos }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-4 d-flex gap-2">
+  <a class="btn btn-outline-primary" href="{{ url_for('libros_listar') }}">Gestionar libros</a>
+  <a class="btn btn-outline-primary" href="{{ url_for('libros_agregar') }}">Agregar libro</a>
+  <a class="btn btn-outline-secondary" href="{{ url_for('prestamos_listar') }}">Préstamos</a>
+  <a class="btn btn-warning" href="{{ url_for('reporte_bajo_stock') }}">Bajo stock</a>
+</div>
+{% endblock %}

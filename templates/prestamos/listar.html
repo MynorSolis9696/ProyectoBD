@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Préstamos{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Préstamos</h3>
+  <div>
+    {% if session.get('user_rol') == 'BIBLIOTECARIO' %}
+      <a href="{{ url_for('prestamos_nuevo') }}" class="btn btn-success">Nuevo préstamo</a>
+      <a href="{{ url_for('prestamos_nuevo') }}" class="btn btn-primary">Nuevo préstamo</a>
+    {% endif %}
+    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">Dashboard</a>
+  </div>
+</div>
+{% if prestamos_count is not none %}
+  <div class="alert alert-info mb-3">Tienes <strong>{{ prestamos_count }}</strong> libro(s) prestado(s) actualmente.</div>
+{% endif %}
+
+{% if prestamos and prestamos|length %}
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>Usuario</th>
+          <th>Libro</th>
+          <th>Editorial</th>
+          <th>Fecha préstamo</th>
+          <th>Fecha devolución</th>
+          <th>Días</th>
+          <th>Penalización</th>
+          <th>Estado</th>
+          {% if session.get('user_rol') == 'BIBLIOTECARIO' %}<th>Acciones</th>{% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in prestamos %}
+          <tr class="{% if p.estado == 'ACTIVO' %}table-warning{% endif %}">
+            <td>{{ p.id }}</td>
+            <td>{{ p.usuario }}</td>
+            <td>{{ p.libro }}</td>
+            <td>{{ p.editorial or '' }}</td>
+            <td>{{ p.fecha_prestamo }}</td>
+            <td>{{ p.fecha_devolucion }}</td>
+            <td>{{ p.get('dias','') }}</td>
+            <td>{{ p.get('penalizacion','') }}</td>
+            <td>
+              {% if p.estado == 'ACTIVO' %}
+                <span class="badge bg-warning text-dark">ACTIVO</span>
+              {% else %}
+                <span class="badge bg-success">DEVUELTO</span>
+              {% endif %}
+            </td>
+            {% if session.get('user_rol') == 'BIBLIOTECARIO' %}
+              <td>
+                {% if p.estado == 'ACTIVO' %}
+                  <form action="{{ url_for('prestamos_devolver', prestamo_id=p.id) }}" method="post" class="d-inline">
+                    <button class="btn btn-sm btn-success" onclick="return confirm('Marcar como devuelto?')">
+                      Devolver
+                    </button>
+                  </form>
+                {% endif %}
+              </td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div class="alert alert-info">No hay datos de préstamos todavía.</div>
+{% endif %}
+{% endblock %}
